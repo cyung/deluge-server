@@ -66,8 +66,6 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  fmt.Printf("adding magnet %s\n", torrent.Magnet)
-
   torrents[torrent.Magnet] = true
 
   w.Header().Set("Content-Type", "application/json; charset=UTF-8")
@@ -81,6 +79,7 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
 
 func DeleteTorrent(w http.ResponseWriter, r *http.Request) {
   magnet := r.URL.Query().Get("magnet")
+  fmt.Printf("deleting %v\n", magnet)
 
   _, ok := torrents[magnet]
 
