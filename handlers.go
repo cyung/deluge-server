@@ -46,15 +46,7 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
 
   // data is not formatted correctly
   if err != nil {
-    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
     w.WriteHeader(422) // cannot be processed
-
-    err = json.NewEncoder(w).Encode(err)
-
-    if err != nil {
-      panic(err)
-    }
-
     return
   }
 
