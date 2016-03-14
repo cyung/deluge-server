@@ -30,7 +30,6 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddTorrent(w http.ResponseWriter, r *http.Request) {
-  // torrent := Torrent{"teststring"}
   body, err := ioutil.ReadAll(io.LimitReader(r.Body, 500000))
 
   if err != nil {
