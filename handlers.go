@@ -43,9 +43,7 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
   }
 
   var torrent Torrent
-
   err = json.Unmarshal(body, &torrent)
-
 
   // data is not formatted correctly
   if err != nil {
@@ -61,6 +59,7 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
     return
   }
 
+  // there was no field "magnet"
   if torrent.Magnet == "" {
     w.WriteHeader(400)
     return
