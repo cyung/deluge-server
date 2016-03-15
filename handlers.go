@@ -99,3 +99,15 @@ func DeleteMagnet(w http.ResponseWriter, r *http.Request) {
 
   w.WriteHeader(200)
 }
+
+func GetTorrents(w http.ResponseWriter, r *http.Request) {
+  w.WriteHeader(200)
+}
+
+func AddTorrent(w http.ResponseWriter, r *http.Request) {
+  w.WriteHeader(200)
+}
+
+func DeleteTorrent(w http.ResponseWriter, r *http.Request) {
+  w.WriteHeader(200)
+}

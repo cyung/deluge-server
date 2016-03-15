@@ -53,4 +53,22 @@ var routes = Routes {
     "/magnets",
     DeleteMagnet,
   },
+  Route {
+    "Torrents",
+    "GET",
+    "/torrents",
+    GetTorrents,
+  },
+  Route {
+    "Torrents",
+    "POST",
+    "/torrents",
+    AddTorrent,
+  },
+  Route {
+    "Torrents",
+    "DELETE",
+    "/torrents",
+    DeleteTorrent,
+  },
 }
