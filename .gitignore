@@ -1,2 +1,8 @@
 .DS_Store
 ./deluge-server
+config.json
+node_modules
+.env
+bin
+pkg
+src
