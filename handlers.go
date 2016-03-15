@@ -9,9 +9,11 @@ import (
 )
 
 var torrents map[string]bool
+var key string
 
 func init() {
   torrents = make(map[string]bool)
+  key = LoadConfig()
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +32,7 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddTorrent(w http.ResponseWriter, r *http.Request) {
+  fmt.Println("adding torrent")
   body, err := ioutil.ReadAll(io.LimitReader(r.Body, 500000))
 
   if err != nil {

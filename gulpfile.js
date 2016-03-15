@@ -32,6 +32,10 @@ gulp.task('server:spawn', function() {
         gutil.log(lines[i]);
       }
     }
+  });
+
+  server.stderr.on('data', function(data) {
+    process.stdout.write(data.toString());
   })
 });
 
