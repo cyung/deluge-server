@@ -22,7 +22,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 // returns all magnets
 func GetMagnets(w http.ResponseWriter, r *http.Request) {
-  if client_key != key {
+  if r.Header.Get("Authorization") != key {
     w.WriteHeader(401)
     return
   }
@@ -37,7 +37,7 @@ func GetMagnets(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddMagnet(w http.ResponseWriter, r *http.Request) {
-  if client_key != key {
+  if r.Header.Get("Authorization") != key {
     w.WriteHeader(401)
     return
   }
@@ -80,7 +80,7 @@ func AddMagnet(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteMagnet(w http.ResponseWriter, r *http.Request) {
-  if client_key != key {
+  if r.Header.Get("Authorization") != key {
     w.WriteHeader(401)
     return
   }
@@ -95,7 +95,7 @@ func DeleteMagnet(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  delete(torrents, magnet)
+  delete(magnets, magnet)
 
   w.WriteHeader(200)
 }
