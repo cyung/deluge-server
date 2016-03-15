@@ -8,11 +8,11 @@ import (
   "io/ioutil"
 )
 
-var torrents map[string]bool
+var magnets map[string]bool
 var key string
 
 func init() {
-  torrents = make(map[string]bool)
+  magnets = make(map[string]bool)
   key = LoadConfig()
 }
 
@@ -20,19 +20,28 @@ func Index(w http.ResponseWriter, r *http.Request) {
   fmt.Fprintln(w, "Welcome!")
 }
 
-// returns all torrents
-func GetTorrents(w http.ResponseWriter, r *http.Request) {
+// returns all magnets
+func GetMagnets(w http.ResponseWriter, r *http.Request) {
+  if client_key != key {
+    w.WriteHeader(401)
+    return
+  }
+
   w.Header().Set("Content-Type", "application/json; charset=UTF-8")
   w.WriteHeader(http.StatusOK)
-  err := json.NewEncoder(w).Encode(torrents)
+  err := json.NewEncoder(w).Encode(magnets)
 
   if err != nil {
     panic(err)
   }
 }
 
-func AddTorrent(w http.ResponseWriter, r *http.Request) {
-  fmt.Println("adding torrent")
+func AddMagnet(w http.ResponseWriter, r *http.Request) {
+  if client_key != key {
+    w.WriteHeader(401)
+    return
+  }
+
   body, err := ioutil.ReadAll(io.LimitReader(r.Body, 500000))
 
   if err != nil {
@@ -44,8 +53,8 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
     panic(err)
   }
 
-  var torrent Torrent
-  err = json.Unmarshal(body, &torrent)
+  var magnet Magnet
+  err = json.Unmarshal(body, &magnet)
 
   // data is not formatted correctly
   if err != nil {
@@ -54,27 +63,32 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
   }
 
   // there was no field "magnet"
-  if torrent.Magnet == "" {
+  if magnet.Magnet == "" {
     w.WriteHeader(400)
     return
   }
 
-  torrents[torrent.Magnet] = true
+  magnets[magnet.Magnet] = true
 
   w.Header().Set("Content-Type", "application/json; charset=UTF-8")
   w.WriteHeader(http.StatusCreated)
-  err = json.NewEncoder(w).Encode(torrents)
+  err = json.NewEncoder(w).Encode(magnets)
 
   if err != nil {
     panic(err)
   }
 }
 
-func DeleteTorrent(w http.ResponseWriter, r *http.Request) {
+func DeleteMagnet(w http.ResponseWriter, r *http.Request) {
+  if client_key != key {
+    w.WriteHeader(401)
+    return
+  }
+
   magnet := r.URL.Query().Get("magnet")
   fmt.Printf("deleting %v\n", magnet)
 
-  _, ok := torrents[magnet]
+  _, ok := magnets[magnet]
 
   if !ok {
     w.WriteHeader(404)
@@ -85,4 +99,3 @@ func DeleteTorrent(w http.ResponseWriter, r *http.Request) {
 
   w.WriteHeader(200)
 }
-

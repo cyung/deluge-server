@@ -1,5 +1,5 @@
 package main
 
-type Torrent struct {
+type Magnet struct {
   Magnet string `json:"magnet"`
 }
