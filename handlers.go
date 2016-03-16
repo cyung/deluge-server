@@ -9,7 +9,12 @@ import (
   "os"
   "archive/zip"
   "fmt"
+  "encoding/json"
 )
+
+func Index(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintln(w, "Welcome!")
+}
 
 // return a zip of all files stored on the server
 func GetTorrents(w http.ResponseWriter, r *http.Request) {
@@ -27,6 +32,11 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
 
   // return if no files
   if len(files) == 0 {
+    w.WriteHeader(404)
+    return
+  }
+  
+  if len(files) == 1 && files[0].Name() == ".DS_Store" {
     w.WriteHeader(404)
     return
   }
@@ -89,7 +99,7 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-    file, _, err := r.FormFile("torrent")
+  file, _, err := r.FormFile("torrent")
   if err != nil {
     w.WriteHeader(500)
     panic(err)
@@ -111,6 +121,50 @@ func AddTorrent(w http.ResponseWriter, r *http.Request) {
   }
 
   w.WriteHeader(201)
+}
+
+func AddMagnet(w http.ResponseWriter, r *http.Request) {
+  if !Validate(r.Header.Get("Authorization")) {
+    w.WriteHeader(401)
+    return
+  }
+
+  body, err := ioutil.ReadAll(io.LimitReader(r.Body, 500000))
+  if err != nil {
+    panic(err)
+  }
+  defer r.Body.Close()
+
+  var magnet Magnet
+  err = json.Unmarshal(body, &magnet)
+
+  // data is not formatted correctly
+  if err != nil {
+    w.WriteHeader(422) // cannot be processed
+    return
+  }
+
+  // there was no field "magnet"
+  if magnet.Magnet == "" {
+    w.WriteHeader(400)
+    return
+  }
+
+  out, err := os.Create("./torrents/" + RandomFilename() + ".magnet")
+  if err != nil {
+    w.WriteHeader(500)
+    fmt.Println("error creating file")
+    panic(err)
+  }
+  defer out.Close()
+
+  _, err = out.WriteString(magnet.Magnet)
+  if err != nil {
+    fmt.Println("error writing to magnet file")
+    panic(err)
+  }
+
+  w.WriteHeader(http.StatusCreated)
 }
 
 // sanitize input by generating random filename

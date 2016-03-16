@@ -37,21 +37,9 @@ var routes = Routes {
   },
   Route {
     "Magnets",
-    "GET",
-    "/magnets",
-    GetMagnets,
-  },
-  Route {
-    "Magnets",
     "POST",
     "/magnets",
     AddMagnet,
-  },
-  Route {
-    "Magnets",
-    "DELETE",
-    "/magnets",
-    DeleteMagnet,
   },
   Route {
     "Torrents",
