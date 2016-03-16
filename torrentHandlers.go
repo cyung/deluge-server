@@ -29,7 +29,7 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
 
   // return if no files
   if len(files) == 0 {
-    w.WriteHeader(200)
+    w.WriteHeader(404)
     return
   }
 
