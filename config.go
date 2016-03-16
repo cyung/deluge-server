@@ -10,7 +10,9 @@ type Configuration struct {
   ChrisKey string `json:"CHRIS_KEY"`
 }
 
-func LoadConfig() string {
+var key string
+
+func init() {
   file, err := ioutil.ReadFile("./config.json")
   if err != nil {
     log.Fatal(err)
@@ -22,5 +24,13 @@ func LoadConfig() string {
     log.Fatal(err)
   }
 
-  return config.ChrisKey
+  key = config.ChrisKey
+}
+
+func GetKey() string {
+  return key
+}
+
+func Validate(client_key string) bool {
+  return client_key == key
 }

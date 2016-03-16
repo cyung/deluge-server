@@ -1,8 +1,10 @@
 .DS_Store
-./deluge-server
+deluge-server
 config.json
 node_modules
 .env
 bin
 pkg
 src
+tmp
+torrents

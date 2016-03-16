@@ -9,11 +9,9 @@ import (
 )
 
 var magnets map[string]bool
-var key string
 
 func init() {
   magnets = make(map[string]bool)
-  key = LoadConfig()
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +20,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 // returns all magnets
 func GetMagnets(w http.ResponseWriter, r *http.Request) {
-  if r.Header.Get("Authorization") != key {
+  if !Validate(r.Header.Get("Authorization")) {
     w.WriteHeader(401)
     return
   }
@@ -37,7 +35,7 @@ func GetMagnets(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddMagnet(w http.ResponseWriter, r *http.Request) {
-  if r.Header.Get("Authorization") != key {
+  if !Validate(r.Header.Get("Authorization")) {
     w.WriteHeader(401)
     return
   }
@@ -80,7 +78,7 @@ func AddMagnet(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteMagnet(w http.ResponseWriter, r *http.Request) {
-  if r.Header.Get("Authorization") != key {
+  if !Validate(r.Header.Get("Authorization")) {
     w.WriteHeader(401)
     return
   }
@@ -97,17 +95,5 @@ func DeleteMagnet(w http.ResponseWriter, r *http.Request) {
 
   delete(magnets, magnet)
 
-  w.WriteHeader(200)
-}
-
-func GetTorrents(w http.ResponseWriter, r *http.Request) {
-  w.WriteHeader(200)
-}
-
-func AddTorrent(w http.ResponseWriter, r *http.Request) {
-  w.WriteHeader(200)
-}
-
-func DeleteTorrent(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(200)
 }
