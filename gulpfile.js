@@ -6,7 +6,7 @@ var gutil = require('gulp-util');
 var server = null;
 
 gulp.task('default', ['assets:watch', 'server:watch']);
-gulp.task('build', ['server:build']);
+gulp.task('build', ['assets:copy', 'server:build']);
 
 /*==============================
 =            ASSETS            =

@@ -131,6 +131,8 @@ func AddMagnet(w http.ResponseWriter, r *http.Request) {
   }
   defer r.Body.Close()
 
+  fmt.Printf("body = %v\n", string(body))
+
   var magnet Magnet
   err = json.Unmarshal(body, &magnet)
 
@@ -139,6 +141,8 @@ func AddMagnet(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(422) // cannot be processed
     return
   }
+
+  fmt.Printf("magnet = %v\n", magnet)
 
   // there was no field "magnet"
   if magnet.Magnet == "" {

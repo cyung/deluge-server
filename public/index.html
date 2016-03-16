@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app">
+
 <head>
   <meta charset="UTF-8">
   <title>ng-chris</title>
+  <link rel="stylesheet" href="styles/main.css">
 </head>
-<body ng-controller="TorrentCtrl as torrent">
-  <p>TEST!</p>
 
+<body ng-controller="TorrentCtrl as torrent">
+  <input type="password" ng-model=torrent.key>
+  <form ng-submit="torrent.uploadMagnet()">
+    <input type="text" name="magnet" ng-model="torrent.magnet">
+  </form>
+  <div ngf-drop="torrent.uploadTorrent($files)" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-pattern="'.torrent'"></div>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
   <script src="app.js"></script>
+  <script src="lib/bower/ng-file-upload/ng-file-upload.min.js"></script>
   <script src="torrent.controller.js"></script>
-  <script src="torrent.factory.js"></script>
 </body>
+
 </html>

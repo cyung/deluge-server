@@ -17,8 +17,6 @@ type Routes []Route
 func NewRouter() *mux.Router {
   router := mux.NewRouter().StrictSlash(true)
 
-  router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public")))
-  http.Handle("/", router)
   
   for _, route := range routes {
     router.
@@ -28,6 +26,7 @@ func NewRouter() *mux.Router {
       Handler(route.HandlerFunc)
   }
 
+  router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public")))
 
   return router
 }
