@@ -18,8 +18,6 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  fmt.Println("getting torrents")
-
   // get list of all torrents in directory
   files, err := ioutil.ReadDir("./torrents")
   if err != nil {
@@ -32,8 +30,6 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(404)
     return
   }
-
-  fmt.Printf("filename = %s\n", files[0].Name())
 
   // create zip file
   zip_filename := "./tmp/" + RandomFilename() + ".zip"
@@ -78,7 +74,6 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
   w.Header().Set("Content-Disposition", "attachment; filename=" + RandomFilename() + ".zip")
   w.Header().Set("Content-Type", "application/zip")
   http.ServeFile(w, r, zip_filename)
-  fmt.Println("serving file")
 
   // remove file after serving
   if err := os.Remove(zip_filename); err != nil {
@@ -142,9 +137,9 @@ func DeleteTorrent(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  filename := r.URL.Query().Get("filename")
+  filename := r.URL.Query().Get("torrent")
 
-  if err := os.Remove(filename); err != nil {
+  if err := os.Remove("./torrents/" + filename); err != nil {
     if os.IsNotExist(err) {
       w.WriteHeader(404)
       return
