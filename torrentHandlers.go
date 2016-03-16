@@ -78,6 +78,12 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
   w.Header().Set("Content-Disposition", "attachment; filename=" + RandomFilename() + ".zip")
   w.Header().Set("Content-Type", "application/zip")
   http.ServeFile(w, r, zip_filename)
+  fmt.Println("serving file")
+
+  // remove file after serving
+  if err := os.Remove(zip_filename); err != nil {
+    panic(err)
+  }
 }
 
 // upload a torrent file to FS
