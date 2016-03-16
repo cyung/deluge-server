@@ -17,6 +17,9 @@ type Routes []Route
 func NewRouter() *mux.Router {
   router := mux.NewRouter().StrictSlash(true)
 
+  router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public")))
+  http.Handle("/", router)
+  
   for _, route := range routes {
     router.
       Methods(route.Method).
@@ -25,16 +28,11 @@ func NewRouter() *mux.Router {
       Handler(route.HandlerFunc)
   }
 
+
   return router
 }
 
 var routes = Routes {
-  Route {
-    "Index",
-    "GET",
-    "/",
-    Index,
-  },
   Route {
     "Magnets",
     "POST",

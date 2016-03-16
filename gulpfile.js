@@ -5,8 +5,27 @@ var gutil = require('gulp-util');
 
 var server = null;
 
-gulp.task('default', ['server:watch']);
+gulp.task('default', ['assets:watch', 'server:watch']);
 gulp.task('build', ['server:build']);
+
+/*==============================
+=            ASSETS            =
+==============================*/
+
+gulp.task('assets:watch', function() {
+  gulp.watch('./js_src/**/*', ['assets:copy'])
+})
+
+gulp.task('assets:copy', function() {
+  return gulp.src('./js_src/**/*')
+    .pipe(gulp.dest('./public'))
+})
+
+
+
+/*==============================
+=            SERVER            =
+==============================*/
 
 gulp.task('server:build', function() {
   var build = child.spawnSync('go', ['install']);

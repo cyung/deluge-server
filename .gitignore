@@ -8,3 +8,5 @@ pkg
 src
 tmp
 torrents
+js_src/lib/bower
+public/lib/bower

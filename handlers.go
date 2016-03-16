@@ -12,10 +12,6 @@ import (
   "encoding/json"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintln(w, "Welcome!")
-}
-
 // return a zip of all files stored on the server
 func GetTorrents(w http.ResponseWriter, r *http.Request) {
   if !Validate(r.Header.Get("Authorization")) {

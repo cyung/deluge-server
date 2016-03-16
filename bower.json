@@ -1,0 +1,19 @@
+{
+  "name": "deluge-server",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    "Christopher Yung <cyung10892@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/cyung/deluge-server",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "js_src/lib/bower",
+    "test",
+    "tests"
+  ]
+}
