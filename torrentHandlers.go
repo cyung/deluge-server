@@ -18,6 +18,8 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
     return
   }
 
+  fmt.Println("getting torrents")
+
   // get list of all torrents in directory
   files, err := ioutil.ReadDir("./torrents")
   if err != nil {
@@ -40,7 +42,6 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(500)
     panic(err)
   }
-  defer zip_file.Close()
 
   zip_writer := zip.NewWriter(zip_file)
 
@@ -63,8 +64,6 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
       w.WriteHeader(500)
       panic(err)
     }
-
-
   }
 
   err = zip_writer.Close()
@@ -73,7 +72,12 @@ func GetTorrents(w http.ResponseWriter, r *http.Request) {
     panic(err)
   }
 
-  w.WriteHeader(200)
+  zip_file.Close()
+
+  // serve zip file to client
+  w.Header().Set("Content-Disposition", "attachment; filename=" + RandomFilename() + ".zip")
+  w.Header().Set("Content-Type", "application/zip")
+  http.ServeFile(w, r, zip_filename)
 }
 
 // upload a torrent file to FS
